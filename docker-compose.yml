@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+
+  django:
+    build: .
+    command: python manage.py runserver 0.0.0.0:9001
+    volumes:
+      - .:/code
+    ports:
+      - "9001:9001"
+    environment:
+      - DB_ENGINE=django.db.backends.sqlite3
+      - DB_NAME=/code/db.sqlite3

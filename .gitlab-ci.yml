@@ -1,0 +1,45 @@
+image: python:3.8
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DJANGO_SETTINGS_MODULE: navegabit_back.settings
+  SSH_HOST: $SSH_HOST
+  SSH_HOST_WEB: $SSH_HOST_WEB
+  SSH_USER: $SSH_USER
+  SSH_KEY: $SSH_KEY
+
+before_script:
+  - apt-get update && apt-get install -y openssh-client
+  - pip install -r requirements/production.txt
+
+build:
+  stage: build
+  script:
+    - python manage.py collectstatic --noinput
+
+test:
+  stage: test
+  script:
+    - python manage.py test
+
+deploy_staging:
+  stage: deploy
+  environment:
+    name: staging
+    url: $SSH_HOST_WEB
+  script:
+    - echo "Deploying to staging environment"
+    - ssh -i $SSH_KEY $SSH_USER@$SSH_HOST "cd /var/www/myproject && git pull && python manage.py migrate && python manange.py runserver 9003"
+
+deploy_production:
+  stage: deploy
+  environment:
+    name: production
+    url: $SSH_HOST_WEB
+  script:
+    - echo "Deploying to production environment"
+    - ssh -i $SSH_KEY $SSH_USER@$SSH_HOST "cd /var/www/myproject && git pull && python manage.py migrate && systemctl restart gunicorn"
