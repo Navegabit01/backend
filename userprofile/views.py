@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+﻿from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .models import UserProfile
 from .serializers import UserProfileSerializer
@@ -41,20 +41,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             # Si los datos no son válidos, retornar una respuesta con los errores y el código de estado HTTP 400
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # def list(self, request, *args, **kwargs):
-    #     queryset = self.filter_queryset(self.get_queryset())
-
-    #     # Realizamos alguna manipulación adicional en el queryset si es necesario
-    #     # Por ejemplo, filtrar los objetos por algún criterio específico
-    #     filtered_queryset = queryset.filter(uid=request.get())
-
-    #     page = self.paginate_queryset(filtered_queryset)
-    #     if page is not None:
-    #         serializer = self.get_serializer(page, many=True)
-    #         return self.get_paginated_response(serializer.data)
-
-    #     serializer = self.get_serializer(filtered_queryset, many=True)
-    #     return Response(serializer.data)
 
     def list(self, request):
         # Retrieve the GUID parameter from the request query parameters
