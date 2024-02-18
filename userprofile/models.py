@@ -1,16 +1,16 @@
 from django.db import models
-
-# from django.conf import settings
+from datetime import datetime, timedelta
 
 
 class UserProfile(models.Model):
     uid = models.CharField(max_length=36)
-    days_of_test = models.PositiveIntegerField(default=15)
-    days_of_use_as_premiun = models.PositiveIntegerField(default=30)
-    start_date_for_test = models.DateField(auto_now_add=True)
-    start_date_for_premiun_use = models.DateField(auto_now_add=True)
-    tests_days_selected = models.BooleanField(default=False)
-    premiun_days_selected = models.BooleanField(default=False)
+    days_of_use = models.DateField(auto_now_add=True)
+    fecha_creacion = models.DateField(auto_now_add=True)
 
     def __str__(self) -> str:
         return self.uid
+
+    def save(self, *args, **kwargs):
+        if not self.days_of_use:
+            self.days_of_use = datetime.now() + timedelta(days=15)
+        super(UserProfile, self).save(*args, **kwargs)

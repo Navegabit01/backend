@@ -1,10 +1,12 @@
-﻿from rest_framework import viewsets
+from datetime import datetime, timedelta
+from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .models import UserProfile
 from .serializers import UserProfileSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -41,21 +43,16 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             # Si los datos no son válidos, retornar una respuesta con los errores y el código de estado HTTP 400
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     def list(self, request):
-        # Retrieve the GUID parameter from the request query parameters
         guid = request.query_params.get("uid", None)
         if guid is not None:
-            # If a GUID parameter is provided, filter the queryset by GUID
-            queryset = UserProfile.objects.filter(uid=guid)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        #     # If no GUID parameter is provided, return all users
-        #     queryset = UserProfile.objects.all()
-
-        serializer = UserProfileSerializer(queryset, many=True)
-        # Serialize the queryset
-
-        # Return the serialized data
-        return Response(serializer.data)
+            get_object_or_404(UserProfile, uid=guid)
+            return Response(
+                status=status.HTTP_200_OK
+                if UserProfile.objects.filter(
+                    uid=guid, days_of_use__gte=datetime.now()
+                ).count()
+                > 0
+                else status.HTTP_403_FORBIDDEN
+            )
+        return Response(status=status.HTTP_400_BAD_REQUEST)

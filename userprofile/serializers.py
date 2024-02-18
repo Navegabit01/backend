@@ -6,4 +6,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ["uid"]
-        # fields = ["__all__"]
