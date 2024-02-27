@@ -1,4 +1,4 @@
-import customtkinter
+﻿import customtkinter
 import os
 import PIL
 from tkinter import simpledialog
@@ -78,12 +78,11 @@ class AmbitApp(ctk.CTk):
             self.toggle_btn.configure(image=self.eye_open_icon)
 
     def init_ui(self):
-        image = PIL.Image.open("./src/assets/background.webp")
-        background_image = ctk.CTkImage(image, size=(800, 600))
+        #image = PIL.Image.open("./src/assets/background.webp")
+        #background_image = ctk.CTkImage(image, size=(800, 600))
 
-        self.title_label = ctk.CTkLabel(
-            self, font=("Roboto", 20), image=background_image)
-        self.title_label.place(x=0, y=0)
+        #self.title_label = ctk.CTkLabel(self, font=("Roboto", 20), image=background_image)
+        #self.title_label.place(x=0, y=0)
 
         self.registration_label = ctk.CTkLabel(self)
         self.registration_label.grid(

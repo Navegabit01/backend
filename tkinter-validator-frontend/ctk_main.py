@@ -8,8 +8,7 @@ from requests import *
 from asyncio import *
 import uuid
 from payment_view import *
-from interface import *
-
+from src.apps.interfaces.interface import AmbitApp
 
 from time import time
 
@@ -34,8 +33,6 @@ data = {
 
 async def fetch_status(url: str) -> dict:
     return await asyncio.to_thread(requests.get, url, None)
-    # response: Response = await asyncio.to_thread(requests.get, url, None)
-    # return response
 
 
 async def main():
@@ -44,7 +41,8 @@ async def main():
         server_data: Task[dict] = asyncio.create_task(
             fetch_status(data["url"] + "?uid=" + uid)
         )
-        data["server_response"] = await server_data
+        mydata = await server_data
+        data["server_response"] = mydata
         data["hay_conexion"] = True
     except:
         pass
@@ -52,14 +50,18 @@ async def main():
 
 asyncio.run(main=main())
 
-# Falta la llamada recursiva
-# para validar cada 1h.
-if data["server_response"].status_code != 200:
+
+if not (not data["hay_conexion"] or data["server_response"].status_code == 403):
     root = customtkinter.CTk()
     root.geometry("500x350")
     customtkinter.set_appearance_mode("dark")
     customtkinter.set_default_color_theme("dark-blue")
     PaymentView(root, data)
-    root.mainloop()
 else:
-    ConfigurationInterface()
+    if data["server_response"].status_code == 404:
+        import requests
+
+        requests.post(data["url"], data={"uid": data["uid"]})
+    root = AmbitApp()
+
+root.mainloop()
