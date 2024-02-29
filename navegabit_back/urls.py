@@ -21,13 +21,15 @@ from home.urls import menu_patterns
 from translate.urls import translate_patterns
 from django.conf import settings
 from django.conf.urls.static import static
+from userprofile.urls import userprofile_patterns
 
 urlpatterns = [
-    path('cards/', include(cards_patterns.urls)),
-    path('home/', include(menu_patterns.urls)),
-    path('translate/', include(translate_patterns.urls)),
-    path('admin/', admin.site.urls),
-    path('', include("admin_volt.urls"))
+    path("cards/", include(cards_patterns.urls)),
+    path("home/", include(menu_patterns.urls)),
+    path("translate/", include(translate_patterns.urls)),
+    path("userprofile_patterns/", include(userprofile_patterns.urls)),
+    path("admin/", admin.site.urls),
+    path("", include("admin_volt.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
