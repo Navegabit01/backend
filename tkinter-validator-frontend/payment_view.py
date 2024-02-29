@@ -1,4 +1,4 @@
-from src.apps.interfaces.interface import AmbitApp
+﻿from src.apps.interfaces.interface import AmbitApp
 import customtkinter as CTK
 import webbrowser
 
@@ -24,7 +24,7 @@ class PaymentView:
         elif data["server_response"].status_code == 403:
             self.label2 = CTK.CTkLabel(
                 master=self.frame,
-                text="Su cuenta ha vencido \n seleccione la opcion de compra para usar la aplicacion.",
+                text="Su cuenta ha vencido \n seleccione la opcion de compra \n para usar la aplicacion.",
                 font=("Roboto", 12),
             )
             self.label2.pack(pady=30, padx=10)

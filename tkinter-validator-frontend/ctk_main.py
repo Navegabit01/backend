@@ -1,19 +1,12 @@
 import customtkinter
-import datetime
-from tkinter import *
-import time
-import requests
 import asyncio
-from requests import *
 from asyncio import *
 import uuid
 from payment_view import *
 from src.apps.interfaces.interface import AmbitApp
+import requests
 
-from time import time
 
-usuario_existente = "ghg"
-usuario_no_existente = "111"
 hay_conexion = False
 uid = str(uuid.uuid1()).split("-")[-1]
 data = {
@@ -51,7 +44,7 @@ async def main():
 asyncio.run(main=main())
 
 
-if not (not data["hay_conexion"] or data["server_response"].status_code == 403):
+if not data["hay_conexion"] or data["server_response"].status_code == 403:
     root = customtkinter.CTk()
     root.geometry("500x350")
     customtkinter.set_appearance_mode("dark")
@@ -59,8 +52,6 @@ if not (not data["hay_conexion"] or data["server_response"].status_code == 403):
     PaymentView(root, data)
 else:
     if data["server_response"].status_code == 404:
-        import requests
-
         requests.post(data["url"], data={"uid": data["uid"]})
     root = AmbitApp()
 
