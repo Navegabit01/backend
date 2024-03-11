@@ -18,7 +18,7 @@ class ConfigurationInterface(customtkinter.CTk):
         super().__init__()
         self.option_check_1 = None
         self.option_check_1 = None
-        self.AmBit = ambit
+        # self.AmBit = ambit
         self.title("my app")
         self.geometry("400x180")
         self.grid_columnconfigure(0, weight=1)
@@ -60,7 +60,6 @@ class AmbitApp(ctk.CTk):
         self.update_texts()
 
         ## Configuracion temporal
-
         self.current_hotkey = "<Control-x>"
         self.options = [
             "Texto - Texto",
@@ -84,6 +83,8 @@ class AmbitApp(ctk.CTk):
         )
         # self.optionmenu.set("Seleccione la deseada." if self.nooption else "Hola")
         self.optionmenu.grid(row=32, column=0, padx=10, pady=(10, 0), sticky="w")
+
+        self.bind(self.current_hotkey, self.optionmenu_callback)
 
     def optionmenu_callback(self, choice):
         if self.options_pos == 3:
