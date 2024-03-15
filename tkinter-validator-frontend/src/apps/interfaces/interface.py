@@ -9,33 +9,33 @@ import PIL
 
 class Configuration:
     def __init__(self):
-        self.initial_language            = "English"
-        self.in_out_selector_pos         = 0 
-        self.options                     = 0
+        self.initial_language = "English"
+        self.in_out_selector_pos = 0
+        self.options = 0
         self.checkbox_continue_check_var = ctk.StringVar(value="off")
-        self.configuration               = {}
-        
+        self.configuration = {}
+
     def load_config(self):
         try:
-            with open("config.json",'r') as file: 
+            with open("config.json", "r") as file:
                 data = json.loads(file.read())
-                self.initial_language            = data['lang']
-                self.in_out_selector_pos         = data['selector_pos']
-                self.options                     = data['opts']
+                self.initial_language = data["lang"]
+                self.in_out_selector_pos = data["selector_pos"]
+                self.options = data["opts"]
         except:
             self.save_config()
 
     def save_config(self):
         self.configuration = {
-                "lang":self.initial_language,
-                "selector_pos":self.in_out_selector_pos,
-                "opts":self.options,
-             }
+            "lang": self.initial_language,
+            "selector_pos": self.in_out_selector_pos,
+            "opts": self.options,
+        }
         jsondata = json.dumps(self.configuration)
-        with open("config.json",'w') as file:
+        with open("config.json", "w") as file:
             file.write(jsondata)
-            
-            
+
+
 class AmbitApp(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -44,7 +44,7 @@ class AmbitApp(ctk.CTk):
         self.config = Configuration()
         self.config.load_config()
         self.lang.set_current_language(self.config.initial_language)
-        
+
         self.geometry("800x600")
         self.icon_path = os.getcwd() + "/src/assets/icon.png"
         self.geometry("800x600")
@@ -53,61 +53,84 @@ class AmbitApp(ctk.CTk):
 
         self.title(self.lang.get_value("title"))
         # Cargar los iconos
-        self.iconphoto(
-            True, ImageTk.PhotoImage(file='./src/assets/icon.png'))
-        self.eye_open_icon = ImageTk.PhotoImage(
-            file='./src/assets/eye-open.png')
-        self.eye_closed_icon = ImageTk.PhotoImage(
-            file='./src/assets/eye-close.png')
-        self.configure(bg='#ADD8E6')
-        
-        #Etiqueta de registro
+        self.iconphoto(True, ImageTk.PhotoImage(file="./src/assets/icon.png"))
+        self.eye_open_icon = ImageTk.PhotoImage(file="./src/assets/eye-open.png")
+        self.eye_closed_icon = ImageTk.PhotoImage(file="./src/assets/eye-close.png")
+        self.configure(bg="#ADD8E6")
+
+        # Etiqueta de registro
         self.registration_label = ctk.CTkLabel(self)
         self.registration_label.grid(row=1, column=0, columnspan=2, padx=20, sticky="w")
 
-        #Selector de lenguage
-        self.language_selector = ctk.CTkOptionMenu(self, values=["Español", "English"], command=self.change_language)
+        # Selector de lenguage
+        self.language_selector = ctk.CTkOptionMenu(
+            self, values=["Español", "English"], command=self.change_language
+        )
         self.language_selector.grid(row=2, column=0, padx=20, sticky="w")
 
-        #Campo de insercion de la API 
-        self.api_key_entry = ctk.CTkEntry(self,show='*',width=400)
+        # Campo de insercion de la API
+        self.api_key_entry = ctk.CTkEntry(self, show="*", width=400)
         self.api_key_entry.grid(row=3, column=0, padx=20, pady=20, sticky="w")
 
-        #Boton de visualizacion  de la llave
-        self.toggle_btn = ctk.CTkButton(self,text='',width=30, image=self.eye_closed_icon)# command=self.toggle_api_visibility)
+        # Boton de visualizacion  de la llave
+        self.toggle_btn = ctk.CTkButton(
+            self, text="", width=30, image=self.eye_closed_icon
+        )  # command=self.toggle_api_visibility)
         self.toggle_btn.grid(row=3, column=1, padx=0, pady=0, sticky="W")
 
-        #Campo de insercion de extensiones
-        self.file_extensions_entry = ctk.CTkEntry(self,placeholder_text_color='red',width=15)
-        self.file_extensions_entry.insert(0, ".doc, .txt, .py, .php, .html, .cs, .exe, .css")
+        # Campo de insercion de extensiones
+        self.file_extensions_entry = ctk.CTkEntry(
+            self, placeholder_text_color="red", width=15
+        )
+        self.file_extensions_entry.insert(
+            0, ".doc, .txt, .py, .php, .html, .cs, .exe, .css"
+        )
         self.file_extensions_entry.grid(row=9, column=0, padx=20, pady=10, sticky="we")
 
-        self.setup_hotkey_section(row=10, column=0,hotkey_default=self.lang.get_value("hotkey_1_default"))
-        self.setup_hotkey_section(row=11, column=0,hotkey_default=self.lang.get_value("hotkey_2_default"))
+        self.setup_hotkey_section(
+            row=10, column=0, hotkey_default=self.lang.get_value("hotkey_1_default")
+        )
+        self.setup_hotkey_section(
+            row=11, column=0, hotkey_default=self.lang.get_value("hotkey_2_default")
+        )
 
-        #Selector de activacion
-        self.activation_switch = ctk.CTkSwitch(self)
+        # Selector de activacion
+        switch_var = ctk.StringVar(value="on")
+        self.activation_switch = ctk.CTkSwitch(
+            self, variable=switch_var, onvalue="on", offvalue="off"
+        )
         self.activation_switch.grid(row=13, column=0, padx=20, pady=10, sticky="w")
 
         # CheckBox de modo continuo
-        self.checkbox_continue  = ctk.CTkCheckBox(self, text=self.lang.get_value("checkbox_continue"), variable=self.config.checkbox_continue_check_var, onvalue="on", offvalue="off")
+        self.checkbox_continue = ctk.CTkCheckBox(
+            self,
+            text=self.lang.get_value("checkbox_continue"),
+            variable=self.config.checkbox_continue_check_var,
+            onvalue="on",
+            offvalue="off",
+        )
         self.checkbox_continue.grid(row=33, column=0, padx=10, pady=0, sticky="W")
 
-        #Etiqueta de contacto
+        # Etiqueta de contacto
         self.contact_info_label = ctk.CTkLabel(self)
-        self.contact_info_label.grid(row=35, column=0, padx=20, pady=30, sticky="w", columnspan=3)
+        self.contact_info_label.grid(
+            row=35, column=0, padx=20, pady=30, sticky="w", columnspan=3
+        )
 
-        # Boton de guardado configuracion 
-        self.save_config = ctk.CTkButton(self,text='',width=30,command=self.save_user_config)# image=self.eye_closed_icon,# command=self.toggle_api_visibility)
+        # Boton de guardado configuracion
+        self.save_config = ctk.CTkButton(
+            self, text="", width=30, command=self.save_user_config
+        )  # image=self.eye_closed_icon,# command=self.toggle_api_visibility)
         self.save_config.grid(row=34, column=1, padx=0, pady=0, sticky="W")
 
         # self.show_message = True
         # self.init_ui()
         self.update_texts()
-          
+
         # Configuracion temporal
         self.current_hotkey1 = "<Control-x>"
-        self.options = self.lang.get_value('in_out_selector')
+        self.current_hotkey2 = "<Control-d>"
+        self.options = self.lang.get_value("in_out_selector")
         self.options_pos = 0
         self.label = ctk.CTkLabel(
             self,
@@ -116,22 +139,27 @@ class AmbitApp(ctk.CTk):
         )
         self.label.grid(row=31, column=0, padx=10, pady=(10, 0), sticky="w")
 
-        temp = self.lang.get_value('in_out_selector')[self.config.in_out_selector_pos]
-        self.opciones_var1 = ctk.StringVar(value= temp)
+        temp = self.lang.get_value("in_out_selector")[self.config.in_out_selector_pos]
+        self.opciones_var1 = ctk.StringVar(value=temp)
         self.option_menu = ctk.CTkOptionMenu(
             self,
             values=self.options,
             variable=self.opciones_var1,
         )
-        
+
         # self.optionmenu.set("Seleccione la deseada." if self.nooption else "Hola")
         self.option_menu.grid(row=32, column=0, padx=10, pady=(10, 0), sticky="w")
 
         self.bind(self.current_hotkey1, self.optionmenu_callback)
+        self.bind(self.current_hotkey2, self.action_over_activation)
 
     def save_user_config(self):
-        self.config.initial_language = self.lang.current_language 
+        self.config.initial_language = self.lang.current_language
         self.config.save_config()
+
+    def action_over_activation(self, choice):
+        pass
+        # self.activation_switch.configure(variable="off")
 
     def optionmenu_callback(self, choice):
         if self.options_pos == 3:
@@ -154,25 +182,32 @@ class AmbitApp(ctk.CTk):
 
     def init_config(self):
         pass
-        #image = PIL.Image.open("./src/assets/background.webp")
-        #background_image = ctk.CTkImage(image, size=(800, 600))
+        # image = PIL.Image.open("./src/assets/background.webp")
+        # background_image = ctk.CTkImage(image, size=(800, 600))
 
-        #self.title_label = ctk.CTkLabel(self, font=("Roboto", 20), image=background_image)
-        #self.title_label.place(x=0, y=0)
-
+        # self.title_label = ctk.CTkLabel(self, font=("Roboto", 20), image=background_image)
+        # self.title_label.place(x=0, y=0)
 
     def setup_hotkey_section(self, row, column, hotkey_default):
         hotkey_label = ctk.CTkLabel(self, text=hotkey_default)
         hotkey_label.grid(row=row, column=column, padx=20, sticky="w")
-        hotkey_button_text = self.lang.get_value("set_hotkey_1") if row == 10 else self.lang.get_value("set_hotkey_2")
+        hotkey_button_text = (
+            self.lang.get_value("set_hotkey_1")
+            if row == 10
+            else self.lang.get_value("set_hotkey_2")
+        )
 
-        self.hotkey_button = ctk.CTkButton(self, text=hotkey_button_text,command=lambda: self.set_hotkey(hotkey_label))
-        self.hotkey_button.grid(row=row, column=column + 1, padx=10,pady=10, sticky="w")
+        self.hotkey_button = ctk.CTkButton(
+            self, text=hotkey_button_text, command=lambda: self.set_hotkey(hotkey_label)
+        )
+        self.hotkey_button.grid(
+            row=row, column=column + 1, padx=10, pady=10, sticky="w"
+        )
 
     def set_hotkey(self, label_widget):
         hotkey_title = self.lang.get_value("HotKey_title_text")
-        hotkey       = self.lang.get_value("HotKey_text")
-        hotkey       = simpledialog.askstring(hotkey_title,hotkey)
+        hotkey = self.lang.get_value("HotKey_text")
+        hotkey = simpledialog.askstring(hotkey_title, hotkey)
         if hotkey:
             label_widget.configure(text=hotkey)
 
@@ -182,16 +217,22 @@ class AmbitApp(ctk.CTk):
 
     def update_texts(self):
         self.title(self.lang.get_value("title"))
-        self.registration_label.configure(text=self.lang.get_value("registration_label"))
+        self.registration_label.configure(
+            text=self.lang.get_value("registration_label")
+        )
         self.activation_switch.configure(text=self.lang.get_value("activate_app"))
         self.contact_info_label.configure(text=self.lang.get_value("contact_info"))
         # self.hotkey_button.configure(text=self.lang.get_value("set_hotkey_1"))
-        self.api_key_entry.configure(placeholder_text=self.lang.get_value('apy_key'))
-        self.file_extensions_entry.configure(placeholder_text=self.lang.get_value('apy_key'))
-        # self.option_menu.configure(values=self.lang.get_value('in_out_selector'))
-        self.save_config.configure(text=self.lang.get_value('save_config'))
-        self.checkbox_continue.configure(text=self.lang.get_value('checkbox_continue'))
+        self.api_key_entry.configure(placeholder_text=self.lang.get_value("apy_key"))
+        self.file_extensions_entry.configure(
+            placeholder_text=self.lang.get_value("apy_key")
+        )
 
+        self.activation_switch.deselect()
+
+        # self.option_menu.configure(values=self.lang.get_value('in_out_selector'))
+        self.save_config.configure(text=self.lang.get_value("save_config"))
+        self.checkbox_continue.configure(text=self.lang.get_value("checkbox_continue"))
 
 
 #  Antigua interfaz
