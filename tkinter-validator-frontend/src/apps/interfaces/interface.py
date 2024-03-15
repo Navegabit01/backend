@@ -151,15 +151,14 @@ class AmbitApp(ctk.CTk):
         self.option_menu.grid(row=32, column=0, padx=10, pady=(10, 0), sticky="w")
 
         self.bind(self.current_hotkey1, self.optionmenu_callback)
-        self.bind(self.current_hotkey2, self.action_over_activation)
+        self.bind(self.current_hotkey2, self.action_over_activation_button)
 
     def save_user_config(self):
         self.config.initial_language = self.lang.current_language
         self.config.save_config()
 
-    def action_over_activation(self, choice):
-        pass
-        # self.activation_switch.configure(variable="off")
+    def action_over_activation_button(self, choice):
+        self.activation_switch.toggle()
 
     def optionmenu_callback(self, choice):
         if self.options_pos == 3:
@@ -227,8 +226,6 @@ class AmbitApp(ctk.CTk):
         self.file_extensions_entry.configure(
             placeholder_text=self.lang.get_value("apy_key")
         )
-
-        self.activation_switch.deselect()
 
         # self.option_menu.configure(values=self.lang.get_value('in_out_selector'))
         self.save_config.configure(text=self.lang.get_value("save_config"))
