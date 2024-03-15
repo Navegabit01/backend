@@ -17,8 +17,8 @@ Translations = {
               "English": "Ambit Configuration"},
     "logo_label": {"Español": "Logo Aquí", "English": "Logo Here"},
     "registration_label": {
-        "Español": "Necesita reactivar el pago antes del día xx:xx:xx para "
-                   "poder seguir utilizando la aplicación. LINK a la página "
+        "Español": "Necesita reactivar el pago antes del día xx:xx:xx para"
+                   "poder seguir utilizando la aplicación. LINK a la página"
                    "web de pago",
         "English": "You need to reactivate the payment before day xx:xx:xx "
                    "to continue using the application. LINK to the payment "
@@ -59,3 +59,73 @@ Translations = {
     "HotKey_title_text": {"Español": "Insertar de Teclas",
                           "English": "Set Hotkey"},
 }
+
+
+
+class Translations2:
+    def __init__(self):
+        self.current_language = "Español"
+        self.translations = {
+        "title": {"Español": "Configuración de Ambit",
+                "English": "Ambit Configuration"},
+        "logo_label": {"Español": "Logo Aquí", "English": "Logo Here"},
+        "registration_label": {
+            "Español": "Necesita reactivar el pago antes del día xx:xx:xx para"
+                    "poder seguir utilizando la aplicación. LINK a la página"
+                    "web de pago",
+            "English": "You need to reactivate the payment before day xx:xx:xx "
+                    "to continue using the application. LINK to the payment "
+                    "web page"
+        },
+        "in_out_selector":{
+                        "Español":["Texto - Texto","Texto - Audio","Audio - Texto","Audio - Audio"],
+                        "English":["Text - Text","Text - Audio","Audio - Text","Audio - Audio"]
+                        },
+        "activate_app": {
+                        "Español": "Activar Aplicación",
+                        "English": "Activate Application"},
+        "api_key_placeholder": {"Español": "Clave API", "English": "API Key"},
+        "file_extensions_placeholder": {"Español": "Extensiones de fichero",
+                                        "English": "File extensions"},
+        "contact_info": {
+            "Español": "Contáctenos: tel: 613243048, sitio web: "
+                    "www.Navegabit.com, correo: navegabit.2020@gmail.com",
+            "English": "Contact us: phone: 613243048, website: "
+                    "www.Navegabit.com, email: navegabit.2020@gmail.com"
+        },
+        "set_hotkey_1": {"Español": "Establecer Hotkey 1",
+                        "English": "Set Hotkey 1"},
+        "set_hotkey_2": {"Español": "Establecer Hotkey 2",
+                        "English": "Set Hotkey 2"},
+        "hotkey_1_default": {
+            "Español": "Hotkey (Activar modo): Ctrl+Shift+A",
+            "English": "Hotkey (Activate mode): Ctrl+Shift+A"
+        },
+        "apy_key": {
+            "Español": "LLave personal de acceso a la API de la IA",
+            "English": "Access APY KEY for the IA"
+        },
+        "show_text": {
+            "Español": "Mostrar",
+            "English": "Access APY KEY for the IA"
+        },
+        "hotkey_2_default": {"Español": "Hotkey (Cambio modo): Ctrl+Shift+B",
+                            "English": "Hotkey (Change mode): Ctrl+Shift+B"},
+        "checkbox_continue": {"Español": "Modo continuo",
+                            "English": "Continue Mode"},
+        "HotKey_text": {
+            "Español": "Insertar combinacion de teclas (e.g., Ctrl+Shift+A):",
+            "English": "Enter the key combination (e.g., Ctrl+Shift+A):"},
+        "HotKey_title_text": {"Español": "Insertar de Teclas",
+                            "English": "Set Hotkey"},
+        "save_config": {    
+                            "Español": "Guardar configuración",
+                            "English": "Save configuration"
+                        },
+    }
+
+    def get_value(self,key):
+        return self.translations[key][self.current_language]
+
+    def set_current_language(self,lang):
+        self.current_language = lang
