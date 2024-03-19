@@ -3,7 +3,6 @@ import customtkinter as ctk
 import os
 import json
 from PIL import Image, ImageTk
-from tkinter import simpledialog
 import PIL
 
 
@@ -123,6 +122,26 @@ class AmbitApp(ctk.CTk):
         )  # image=self.eye_closed_icon,# command=self.toggle_api_visibility)
         self.save_config.grid(row=34, column=1, padx=0, pady=0, sticky="W")
 
+        # Configuracion de los hotkeys
+        self.hotkey = None
+        self.hotkey2 = None
+
+    def call_hotkey1(self):
+        toplv = self.hotkey
+        if toplv is None or not toplv.winfo_exists():
+            self.hotkey = Hotkey1(self)
+            return
+        self.hotkey.focus()
+
+    def call_hotkey2(self):
+        toplv = self.hotkey2
+        if toplv is None or not toplv.winfo_exists():
+            self.hotkey2 = Hotkey2(self)
+            return
+        self.hotkey.focus()
+
+        # Fin de la configuracion de los hotkey
+
         # self.show_message = True
         # self.init_ui()
         self.update_texts()
@@ -197,18 +216,13 @@ class AmbitApp(ctk.CTk):
         )
 
         self.hotkey_button = ctk.CTkButton(
-            self, text=hotkey_button_text, command=lambda: self.set_hotkey(hotkey_label)
+            self,
+            text=hotkey_button_text,
+            command=self.call_hotkey1 if row == 10 else self.call_hotkey2,
         )
         self.hotkey_button.grid(
             row=row, column=column + 1, padx=10, pady=10, sticky="w"
         )
-
-    def set_hotkey(self, label_widget):
-        hotkey_title = self.lang.get_value("HotKey_title_text")
-        hotkey = self.lang.get_value("HotKey_text")
-        hotkey = simpledialog.askstring(hotkey_title, hotkey)
-        if hotkey:
-            label_widget.configure(text=hotkey)
 
     def change_language(self, language):
         self.lang.current_language = language
@@ -230,6 +244,106 @@ class AmbitApp(ctk.CTk):
         # self.option_menu.configure(values=self.lang.get_value('in_out_selector'))
         self.save_config.configure(text=self.lang.get_value("save_config"))
         self.checkbox_continue.configure(text=self.lang.get_value("checkbox_continue"))
+
+
+# funcion pendiente a implementar para la escritura de los hotkey
+
+# key_press1 = []
+# # teclas_presionadas = []
+# # hotkeys = {"hotkey1": "", "hotkey2": ""}
+
+
+# def get_chain_of_code(code):
+#     pass
+#     if code == 17:
+#         if len(key_press1) >= 1 and key_press1[0] != "Control":
+#             key_press1 = []
+#             key_press1.append("Control")
+
+#         # if len(key_press1) == 2 and key_press1[0] == "Control":
+
+
+# class App(ctk.CTk):
+#     def __init__(self):
+#         super().__init__()
+#         self.geometry("500x400")
+
+#         self.button_1 = ctk.CTkButton(self, text="Hotkey 1", command=self.call_hotkey1)
+#         self.button_1.grid(row=9, column=0, padx=20, pady=10, sticky="we")
+# self.button_1.pack(side="top", padx=20, pady=20)
+
+# self.button_2 = ctk.CTkButton(self, text="Hotkey 2", command=self.call_hotkey2)
+# self.button_2.pack(side="top", padx=20, pady=20)
+
+# self.button_1 = ctk.CTkButton(self, text="Hotkey 1", command=self.call_hotkey1)
+# self.button_1.pack(side="top", padx=20, pady=20)
+
+# self.button_2 = ctk.CTkButton(self, text="Hotkey 2", command=self.call_hotkey2)
+# self.button_2.pack(side="top", padx=20, pady=20)
+
+
+class Hotkey1(ctk.CTkToplevel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.title("Hotkey no_1")
+        self.geometry("350x120")
+        self.resizable(False, False)
+        self.label = ctk.CTkLabel(
+            self,
+            text="Introduzca el atajo de teclado deseado:\n\n" + "Ctrl + Shift + l",
+        )
+        self.label.grid(row=1, column=0, padx=70, pady=10, sticky="w")
+
+        self.aceptar = ctk.CTkButton(self, text="Aceptar", width=50)
+        self.aceptar.grid(row=2, column=0, padx=100, pady=10, sticky="w")
+
+        self.cerrar = ctk.CTkButton(
+            self, text="Cerrar", width=50, command=self.close_window
+        )
+        self.cerrar.grid(row=2, column=0, padx=200, pady=10, sticky="w")
+
+        self.bind("<Key>", self.on_key_press)
+
+    def close_window(self):
+        self.destroy()
+
+    def on_key_press(self, event):
+        print(event)
+
+        self.label.configure(
+            text=f"Introduzca el atajo de teclado deseado: \n\n{event.keysym}"
+        )
+
+
+class Hotkey2(ctk.CTkToplevel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.title("Hotkey no_2")
+        self.geometry("400x120")
+        self.resizable(False, False)
+
+        self.label = ctk.CTkLabel(
+            self,
+            text="Introduzca el atajo de teclado deseado:\n\n" + "Ctrl + Shift + l",
+        )
+        self.label.grid(row=1, column=0, padx=70, pady=10, sticky="w")
+
+        self.aceptar = ctk.CTkButton(self, text="Aceptar", width=50)
+        self.aceptar.grid(row=2, column=0, padx=100, pady=10, sticky="w")
+
+        self.cerrar = ctk.CTkButton(
+            self, text="Cerrar", width=50, command=self.close_window
+        )
+        self.cerrar.grid(row=2, column=0, padx=200, pady=10, sticky="w")
+
+        self.bind("<Key>", self.on_key_press)
+
+    def close_window(self):
+        self.destroy()
+
+    def on_key_press(self, event):
+        print(event)
+        self.label.configure(text=f"Tecla presionada:  \n{event.keysym}")
 
 
 #  Antigua interfaz
