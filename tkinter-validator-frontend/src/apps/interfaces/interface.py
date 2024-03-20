@@ -125,25 +125,6 @@ class AmbitApp(ctk.CTk):
         # Configuracion de los hotkeys
         self.hotkey = None
         self.hotkey2 = None
-
-    def call_hotkey1(self):
-        toplv = self.hotkey
-        if toplv is None or not toplv.winfo_exists():
-            self.hotkey = Hotkey1(self)
-            return
-        self.hotkey.focus()
-
-    def call_hotkey2(self):
-        toplv = self.hotkey2
-        if toplv is None or not toplv.winfo_exists():
-            self.hotkey2 = Hotkey2(self)
-            return
-        self.hotkey.focus()
-
-        # Fin de la configuracion de los hotkey
-
-        # self.show_message = True
-        # self.init_ui()
         self.update_texts()
 
         # Configuracion temporal
@@ -171,6 +152,25 @@ class AmbitApp(ctk.CTk):
 
         self.bind(self.current_hotkey1, self.optionmenu_callback)
         self.bind(self.current_hotkey2, self.action_over_activation_button)
+
+    def call_hotkey1(self):
+        toplv = self.hotkey
+        if toplv is None or not toplv.winfo_exists():
+            self.hotkey = Hotkey1(self)
+            return
+        self.hotkey.focus()
+
+    def call_hotkey2(self):
+        toplv = self.hotkey2
+        if toplv is None or not toplv.winfo_exists():
+            self.hotkey2 = Hotkey2(self)
+            return
+        self.hotkey.focus()
+
+        # Fin de la configuracion de los hotkey
+
+        # self.show_message = True
+        # self.init_ui()
 
     def save_user_config(self):
         self.config.initial_language = self.lang.current_language
@@ -345,6 +345,9 @@ class Hotkey2(ctk.CTkToplevel):
         print(event)
         self.label.configure(text=f"Tecla presionada:  \n{event.keysym}")
 
+
+root = AmbitApp()
+root.mainloop()
 
 #  Antigua interfaz
 
