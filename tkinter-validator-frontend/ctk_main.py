@@ -44,15 +44,15 @@ async def main():
 asyncio.run(main=main())
 
 
-if not data["hay_conexion"] or data["server_response"].status_code == 403:
-    root = customtkinter.CTk()
-    root.geometry("500x350")
-    customtkinter.set_appearance_mode("dark")
-    customtkinter.set_default_color_theme("dark-blue")
-    PaymentView(root, data)
-else:
-    if data["server_response"].status_code == 404:
-        requests.post(data["url"], data={"uid": data["uid"]})
-    root = AmbitApp()
+# if not data["hay_conexion"] or data["server_response"].status_code == 403:
+#     root = customtkinter.CTk()
+#     root.geometry("500x350")
+#     customtkinter.set_appearance_mode("dark")
+#     customtkinter.set_default_color_theme("dark-blue")
+#     PaymentView(root, data)
+# else:
+#     if data["server_response"].status_code == 404:
+#         requests.post(data["url"], data={"uid": data["uid"]})
+root = AmbitApp()
 
 root.mainloop()
