@@ -84,12 +84,14 @@ class Translations2:
                     "Texto - Audio",
                     "Audio - Texto",
                     "Audio - Audio",
+                    "Modo continuo",
                 ],
                 "English": [
                     "Text - Text",
                     "Text - Audio",
                     "Audio - Text",
                     "Audio - Audio",
+                    "Continue Mode",
                 ],
             },
             "activate_app": {
@@ -116,8 +118,8 @@ class Translations2:
                 "English": "Set Hotkey 2",
             },
             "hotkey_1_default": {
-                "Español": "Hotkey (Activar modo): Ctrl+Shift+A",
-                "English": "Hotkey (Activate mode): Ctrl+Shift+A",
+                "Español": "Hotkey (Activar modo): ",  # Ctrl+Shift+A",
+                "English": "Hotkey (Activate mode): ",  # Ctrl+Shift+A",
             },
             "apy_key": {
                 "Español": "LLave personal de acceso a la API de la IA",
@@ -125,8 +127,8 @@ class Translations2:
             },
             "show_text": {"Español": "Mostrar", "English": "Access APY KEY for the IA"},
             "hotkey_2_default": {
-                "Español": "Hotkey (Cambio modo): Ctrl+Shift+B",
-                "English": "Hotkey (Change mode): Ctrl+Shift+B",
+                "Español": "Hotkey (Cambio modo): ",  # Ctrl+Shift+B",
+                "English": "Hotkey (Change mode): ",  # Ctrl+Shift+B",
             },
             "checkbox_continue": {
                 "Español": "Modo continuo",

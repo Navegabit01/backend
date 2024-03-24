@@ -113,7 +113,7 @@ class HotkeyValidator:
     def shift_after_ctrl(self):
         ctrl_pos = 0
         shift_pos = 0
-        if self.exist_ctrl(self.lst) and self.exist_shift(self.lst):
+        if self.exist_ctrl() and self.exist_shift():
             for pos, elm in enumerate(self.lst):
                 if self.is_ctrl(elm):
                     ctrl_pos = pos
@@ -216,7 +216,6 @@ class HotkeyValidator:
         )
 
     # end rule of two
-
     def valid_hotkey_secuence(self):
         if self.ctr_shift_letter():
             return True

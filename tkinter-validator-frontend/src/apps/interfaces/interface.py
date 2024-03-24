@@ -34,6 +34,10 @@ class Configuration:
         self.hotkey1 = "<Control-x>"
         self.hotkey2 = "<Control-Shift-X>"
         self.lang = "English"
+        self.ambitapp = None
+
+    def set_ambitapp(self, ambit):
+        self.ambitapp = ambit
 
     def set_current_lang(self, lang):
         self.lang = lang
@@ -87,7 +91,8 @@ class AmbitApp(ctk.CTk):
         self.config = Configuration()
         self.config.load_config()
         self.lang.set_current_language(self.config.initial_language)
-
+        self.config.set_ambitapp(self)
+        self.hv = HV()
         self.geometry("800x600")
         self.icon_path = os.getcwd() + "/src/assets/icon.png"
         self.geometry("800x600")
@@ -117,8 +122,12 @@ class AmbitApp(ctk.CTk):
 
         # Boton de visualizacion  de la llave
         self.toggle_btn = ctk.CTkButton(
-            self, text="", width=30, image=self.eye_closed_icon
-        )  # command=self.toggle_api_visibility)
+            self,
+            text="",
+            width=30,
+            image=self.eye_closed_icon,
+            command=self.toggle_api_visibility,
+        )
         self.toggle_btn.grid(row=3, column=1, padx=0, pady=0, sticky="W")
 
         # Campo de insercion de extensiones
@@ -130,12 +139,38 @@ class AmbitApp(ctk.CTk):
         )
         self.file_extensions_entry.grid(row=9, column=0, padx=20, pady=10, sticky="we")
 
-        self.setup_hotkey_section(
-            row=10, column=0, hotkey_default=self.lang.get_value("hotkey_1_default")
+        # Hotkey 1
+        self.hotkey_label1 = ctk.CTkLabel(self)
+        self.hotkey_label1.grid(row=10, column=0, padx=20, sticky="w")
+
+        self.hotkey_button1 = ctk.CTkButton(
+            self, text=self.lang.get_value("set_hotkey_1"), command=self.call_hotkey1
         )
-        self.setup_hotkey_section(
-            row=11, column=0, hotkey_default=self.lang.get_value("hotkey_2_default")
+        self.hotkey_button1.grid(row=10, column=1, padx=10, pady=10, sticky="w")
+        ###
+
+        # Hotkey 2
+        self.hotkey_label2 = ctk.CTkLabel(self)
+        self.hotkey_label2.grid(row=11, column=0, padx=20, sticky="w")
+        self.hotkey_button2 = ctk.CTkButton(
+            self, text=self.lang.get_value("set_hotkey_2"), command=self.call_hotkey2
         )
+        self.hotkey_button2.grid(row=11, column=1, padx=10, pady=10, sticky="w")
+        ###
+
+        # self.setup_hotkey_section(
+        #     row=10,
+        #     column=0,
+        #     hotkey_default=self.lang.get_value("hotkey_1_default")
+        #     + self.hv.config_to_load(self.config.hotkey1),
+        # )
+
+        # self.setup_hotkey_section(
+        #     row=11,
+        #     column=0,
+        #     hotkey_default=self.lang.get_value("hotkey_2_default")
+        #     + self.hv.config_to_load(self.config.hotkey2),
+        # )
 
         # Selector de activacion
         switch_var = ctk.StringVar(value="on")
@@ -145,14 +180,14 @@ class AmbitApp(ctk.CTk):
         self.activation_switch.grid(row=13, column=0, padx=20, pady=10, sticky="w")
 
         # CheckBox de modo continuo
-        self.checkbox_continue = ctk.CTkCheckBox(
-            self,
-            text=self.lang.get_value("checkbox_continue"),
-            variable=self.config.checkbox_continue_check_var,
-            onvalue="on",
-            offvalue="off",
-        )
-        self.checkbox_continue.grid(row=33, column=0, padx=10, pady=0, sticky="W")
+        # self.checkbox_continue = ctk.CTkCheckBox(
+        #     self,
+        #     text=self.lang.get_value("checkbox_continue"),
+        #     variable=self.config.checkbox_continue_check_var,
+        #     onvalue="on",
+        #     offvalue="off",
+        # )
+        # self.checkbox_continue.grid(row=33, column=0, padx=10, pady=0, sticky="W")
 
         # Etiqueta de contacto
         self.contact_info_label = ctk.CTkLabel(self)
@@ -173,12 +208,6 @@ class AmbitApp(ctk.CTk):
         # Configuracion temporal
         self.options = self.lang.get_value("in_out_selector")
         self.options_pos = 0
-        # self.label = ctk.CTkLabel(
-        #     self,
-        #     text="Hasta que no funcione el selector de hotkey usare:\n El selector <Control-x> para tipo de entrada.\n El selector <Control-d> para activar la aplicacion 2\n",
-        #     font=("Roboto", 12),
-        # )
-        # self.label.grid(row=31, column=0, padx=10, pady=(10, 0), sticky="w")
 
         # Data
         temp = self.lang.get_value("in_out_selector")[self.config.in_out_selector_pos]
@@ -217,7 +246,7 @@ class AmbitApp(ctk.CTk):
         toplv = self.hotkey_window_2
         if toplv is None or not toplv.winfo_exists():
             self.hotkey_window_2 = Hotkey2(self)
-            self.hotkey_window.set_singlenton(self.config)
+            self.hotkey_window_2.set_singlenton(self.config)
             return
         self.hotkey_window_2.focus()
 
@@ -229,7 +258,7 @@ class AmbitApp(ctk.CTk):
         self.activation_switch.toggle()
 
     def optionmenu_callback(self, choice):
-        if self.options_pos == 3:
+        if self.options_pos == 4:
             self.options_pos = -1
         self.options_pos += 1
         self.option_menu.set(self.options[self.options_pos])
@@ -239,13 +268,12 @@ class AmbitApp(ctk.CTk):
         self.show_message = True
 
     def toggle_api_visibility(self):
-        pass
-        # if self.api_key_entry.cget('show') == '':
-        #     self.api_key_entry.configure(show='*')
-        #     self.toggle_btn.configure(image=self.eye_closed_icon)
-        # else:
-        #     self.api_key_entry.configure(show='')
-        #     self.toggle_btn.configure(image=self.eye_open_icon)
+        if self.api_key_entry.cget("show") == "":
+            self.api_key_entry.configure(show="*")
+            self.toggle_btn.configure(image=self.eye_closed_icon)
+        else:
+            self.api_key_entry.configure(show="")
+            self.toggle_btn.configure(image=self.eye_open_icon)
 
     def init_config(self):
         pass
@@ -283,7 +311,7 @@ class AmbitApp(ctk.CTk):
         self.save_config.configure(text=self.lang.get_value("save_config"))
         self.api_key_entry.configure(placeholder_text=self.lang.get_value("apy_key"))
         self.activation_switch.configure(text=self.lang.get_value("activate_app"))
-        self.checkbox_continue.configure(text=self.lang.get_value("checkbox_continue"))
+        # self.checkbox_continue.configure(text=self.lang.get_value("checkbox_continue"))
         self.registration_label.configure(
             text=self.lang.get_value("registration_label")
         )
@@ -292,6 +320,16 @@ class AmbitApp(ctk.CTk):
             placeholder_text=self.lang.get_value("apy_key")
         )
         self.language_selector.set(self.lang.current_language)
+
+        self.hotkey_label1.configure(
+            text=self.lang.get_value("hotkey_1_default")
+            + self.hv.config_to_load(self.config.hotkey1)
+        )
+
+        self.hotkey_label2.configure(
+            text=self.lang.get_value("hotkey_2_default")
+            + self.hv.config_to_load(self.config.hotkey2)
+        )
 
 
 class Hotkey1(ctk.CTkToplevel):
@@ -338,6 +376,7 @@ class Hotkey1(ctk.CTkToplevel):
             )
         else:
             self.singlenton.set_hotkey1(self.hv.create_hotkey_to_main())
+            self.singlenton.ambitapp.update_texts()
             self.close_window()
 
     def close_window(self):
@@ -362,8 +401,8 @@ class Hotkey2(ctk.CTkToplevel):
         self.title("Hotkey no_2")
         self.geometry("350x120")
         self.resizable(False, False)
-        self.singlenton = None
         self.hv = HV()
+        self.singlenton = None
         self.hotkey_default = None
         self.current_hotkey = []
         self.label = ctk.CTkLabel(
@@ -400,6 +439,7 @@ class Hotkey2(ctk.CTkToplevel):
             )
         else:
             self.singlenton.set_hotkey2(self.hv.create_hotkey_to_main())
+            self.singlenton.ambitapp.update_texts()
             self.close_window()
 
     def close_window(self):
