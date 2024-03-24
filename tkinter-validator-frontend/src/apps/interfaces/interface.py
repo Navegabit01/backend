@@ -125,7 +125,7 @@ class AmbitApp(ctk.CTk):
             self,
             text="",
             width=30,
-            image=self.eye_closed_icon,
+            image=self.eye_open_icon,
             command=self.toggle_api_visibility,
         )
         self.toggle_btn.grid(row=3, column=1, padx=0, pady=0, sticky="W")
@@ -283,23 +283,23 @@ class AmbitApp(ctk.CTk):
         # self.title_label = ctk.CTkLabel(self, font=("Roboto", 20), image=background_image)
         # self.title_label.place(x=0, y=0)
 
-    def setup_hotkey_section(self, row, column, hotkey_default):
-        hotkey_label = ctk.CTkLabel(self, text=hotkey_default)
-        hotkey_label.grid(row=row, column=column, padx=20, sticky="w")
-        hotkey_button_text = (
-            self.lang.get_value("set_hotkey_1")
-            if row == 10
-            else self.lang.get_value("set_hotkey_2")
-        )
+    # def setup_hotkey_section(self, row, column, hotkey_default):
+    #     hotkey_label = ctk.CTkLabel(self, text=hotkey_default)
+    #     hotkey_label.grid(row=row, column=column, padx=20, sticky="w")
+    #     hotkey_button_text = (
+    #         self.lang.get_value("set_hotkey_1")
+    #         if row == 10
+    #         else self.lang.get_value("set_hotkey_2")
+    #     )
 
-        self.hotkey_button = ctk.CTkButton(
-            self,
-            text=hotkey_button_text,
-            command=self.call_hotkey1 if row == 10 else self.call_hotkey2,
-        )
-        self.hotkey_button.grid(
-            row=row, column=column + 1, padx=10, pady=10, sticky="w"
-        )
+    #     self.hotkey_button = ctk.CTkButton(
+    #         self,
+    #         text=hotkey_button_text,
+    #         command=self.call_hotkey1 if row == 10 else self.call_hotkey2,
+    #     )
+    #     self.hotkey_button.grid(
+    #         row=row, column=column + 1, padx=10, pady=10, sticky="w"
+    #     )
 
     def change_language(self, language):
         self.lang.current_language = language
