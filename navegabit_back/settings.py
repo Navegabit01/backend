@@ -94,10 +94,24 @@ WSGI_APPLICATION = 'navegabit_back.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Define the relative path to the CA certificate
+CA_CERT_PATH = os.path.join(BASE_DIR, 'cert', 'ca.pem')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'defaultdb',
+        'USER': 'avnadmin',
+        'PASSWORD': 'AVNS_og2bOce8qSka45BA-qx',
+        'HOST': 'mysql-35d4a8b6-navegabit-f699.f.aivencloud.com',
+        'PORT': '25715',
+        'OPTIONS': {
+            'ssl': {
+                'ca': CA_CERT_PATH,
+            },
+        },
     }
 }
 

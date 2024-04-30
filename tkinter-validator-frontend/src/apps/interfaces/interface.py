@@ -5,8 +5,7 @@ from tkinter import messagebox
 import customtkinter as ctk
 import os
 import json
-from PIL import Image, ImageTk
-import PIL
+from PIL import ImageTk
 
 
 """
@@ -93,9 +92,9 @@ class AmbitApp(ctk.CTk):
         self.lang.set_current_language(self.config.initial_language)
         self.config.set_ambitapp(self)
         self.hv = HV()
-        self.geometry("800x600")
+        self.geometry("800x450")
         self.icon_path = os.getcwd() + "/src/assets/icon.png"
-        self.geometry("800x600")
+        self.geometry("800x450")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("dark-blue")
 
@@ -156,21 +155,6 @@ class AmbitApp(ctk.CTk):
             self, text=self.lang.get_value("set_hotkey_2"), command=self.call_hotkey2
         )
         self.hotkey_button2.grid(row=11, column=1, padx=10, pady=10, sticky="w")
-        ###
-
-        # self.setup_hotkey_section(
-        #     row=10,
-        #     column=0,
-        #     hotkey_default=self.lang.get_value("hotkey_1_default")
-        #     + self.hv.config_to_load(self.config.hotkey1),
-        # )
-
-        # self.setup_hotkey_section(
-        #     row=11,
-        #     column=0,
-        #     hotkey_default=self.lang.get_value("hotkey_2_default")
-        #     + self.hv.config_to_load(self.config.hotkey2),
-        # )
 
         # Selector de activacion
         switch_var = ctk.StringVar(value="on")
@@ -178,16 +162,6 @@ class AmbitApp(ctk.CTk):
             self, variable=switch_var, onvalue="on", offvalue="off"
         )
         self.activation_switch.grid(row=13, column=0, padx=20, pady=10, sticky="w")
-
-        # CheckBox de modo continuo
-        # self.checkbox_continue = ctk.CTkCheckBox(
-        #     self,
-        #     text=self.lang.get_value("checkbox_continue"),
-        #     variable=self.config.checkbox_continue_check_var,
-        #     onvalue="on",
-        #     offvalue="off",
-        # )
-        # self.checkbox_continue.grid(row=33, column=0, padx=10, pady=0, sticky="W")
 
         # Etiqueta de contacto
         self.contact_info_label = ctk.CTkLabel(self)
@@ -198,7 +172,7 @@ class AmbitApp(ctk.CTk):
         # Boton de guardado configuracion
         self.save_config = ctk.CTkButton(
             self, text="", width=30, command=self.save_user_config
-        )  # image=self.eye_closed_icon,# command=self.toggle_api_visibility)
+        )
         self.save_config.grid(row=34, column=1, padx=0, pady=0, sticky="W")
 
         # Configuracion de los hotkeys
@@ -277,29 +251,6 @@ class AmbitApp(ctk.CTk):
 
     def init_config(self):
         pass
-        # image = PIL.Image.open("./src/assets/background.webp")
-        # background_image = ctk.CTkImage(image, size=(800, 600))
-
-        # self.title_label = ctk.CTkLabel(self, font=("Roboto", 20), image=background_image)
-        # self.title_label.place(x=0, y=0)
-
-    # def setup_hotkey_section(self, row, column, hotkey_default):
-    #     hotkey_label = ctk.CTkLabel(self, text=hotkey_default)
-    #     hotkey_label.grid(row=row, column=column, padx=20, sticky="w")
-    #     hotkey_button_text = (
-    #         self.lang.get_value("set_hotkey_1")
-    #         if row == 10
-    #         else self.lang.get_value("set_hotkey_2")
-    #     )
-
-    #     self.hotkey_button = ctk.CTkButton(
-    #         self,
-    #         text=hotkey_button_text,
-    #         command=self.call_hotkey1 if row == 10 else self.call_hotkey2,
-    #     )
-    #     self.hotkey_button.grid(
-    #         row=row, column=column + 1, padx=10, pady=10, sticky="w"
-    #     )
 
     def change_language(self, language):
         self.lang.current_language = language
